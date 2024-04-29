@@ -16,9 +16,9 @@ class _CalendarPageState extends State<CalendarPage> {
         body: Column(
           children: [
             TableCalendar(
-              focusedDay: DateTime.now(),
-              firstDay: DateTime(2024,1,1),
-              lastDay: DateTime(2024,12,31)
+              focusedDay: DateTime.now(),     // NOTE :: 달력에서 자동으로 보여줄 날
+              firstDay: DateTime(2024,1,1),   // NOTE :: 달력 구성 시, 맨 처음 보여줄 날짜
+              lastDay: DateTime(2024,12,31)   // NOTE :: 달력 구성 시, 맨 마지막으로 보여줄 날짜
             ),
           ],
         ),
