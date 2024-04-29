@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:chinchun/screens/calendar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,6 +56,18 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const CalendarPage();
+                  }
+                ));
+              },
+              child: const Text(
+                'Go to Calendar'
+              )
+            )
           ],
         ),
       ),
