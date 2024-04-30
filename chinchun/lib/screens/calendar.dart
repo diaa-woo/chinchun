@@ -47,6 +47,49 @@ class _CalendarPageState extends State<CalendarPage> {
               onPageChanged: (focusedDay) {
                 _focusedDay = focusedDay;
               },
+              calendarBuilders: CalendarBuilders(
+                markerBuilder:(context, day, events) {
+                  if (events.isNotEmpty) {
+                    List iconEvents = events;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: events.length,
+                      itemBuilder: (context, index) {
+                        Map key = iconEvents[index];
+                        if (key['iconIndex'] == 1) {
+                          return Container(
+                            margin: EdgeInsets.only(top: 40.h),
+                            child: Icon(
+                              size: 20.sp,
+                              Icons.cruelty_free_outlined,
+                              color: Colors.purpleAccent
+                            ),
+                          );
+                        } else if (key['iconIndex'] == 2) {
+                          return Container(
+                            margin: EdgeInsets.only(top: 40.h),
+                            child: Icon(
+                              size: 20.sp,
+                              Icons.liquor_outlined,
+                              color: Colors.yellowAccent
+                            )
+                          );
+                        } else if (key['iconIndex'] == 3) {   // NOTE :: 수행(기도자의 마음으로)
+                          return Container(
+                            margin: EdgeInsets.only(top: 40.h),
+                            child: Icon(
+                              size: 20.sp,
+                              Icons.commit_outlined,
+                              color: Colors.brown
+                            )
+                          );
+                        }
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),
