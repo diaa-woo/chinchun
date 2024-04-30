@@ -9,7 +9,7 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.month;    // NOTE :: 표시할 단위 선언
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
@@ -26,10 +26,10 @@ class _CalendarPageState extends State<CalendarPage> {
               headerStyle: const HeaderStyle(
                 titleCentered: true,
               ),
-              selectedDayPredicate: (day) {
+              selectedDayPredicate: (day) {        // NOTE :: 캘린더에서 현재 선택된 날짜 지정
                 return isSameDay(_selectedDay, day);
               },
-              onDaySelected: (selectedDay, focusedDay) {
+              onDaySelected: (selectedDay, focusedDay) {   // NOTE :: 사용자가 캘린더에서 날짜를 선택할 시 해당 날짜가 _selectedDay로 업데이트되고 화면도 업데이트됨. 이에 선택한 날짜에 대한 변경 사항 표시
                 if(!isSameDay(_selectedDay, selectedDay)) {
                   setState(() {
                     _selectedDay = selectedDay;
@@ -40,7 +40,7 @@ class _CalendarPageState extends State<CalendarPage> {
               onFormatChanged: (format) {
                 if (_calendarFormat != format) {
                   setState(() {
-                    _calendarFormat = format;
+                    _calendarFormat = format;   // NOTE :: 사용
                   });
                 }
               },
