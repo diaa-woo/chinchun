@@ -85,9 +85,11 @@ class _CalendarPageState extends State<CalendarPage> {
                             )
                           );
                         }
+                        return null;
                       },
                     );
                   }
+                  return null;
                 },
               ),
             ),
