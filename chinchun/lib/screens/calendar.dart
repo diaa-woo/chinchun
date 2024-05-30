@@ -95,6 +95,212 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return StatefulBuilder(builder: (BuildContext context, StateSetter dialogSetState) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)
+                    ),
+                    title: const Text('일정 추가하기'),
+                    actions: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 15.w, right: 15.w),
+                        child: CustomTextField(text: '일정 내용', hintText: '내용을 입력해주세요.', controller: _textEditingController,)
+                      ),
+                      SizedBox(height: 20.h,),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(left: 17.w, right: 15.w),
+                        child: Text('캘린더에 표시할 마커를 선택하세요', style: TextStyle(fontSize: 20.sp))
+                      ),
+                      SizedBox(height: 20.h),
+                      Center(
+                        child: Container(
+                          width: 300.w,
+                          height: 120.h,
+                          margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.7),
+                                spreadRadius: 0,
+                                blurRadius: 5.0,
+                                offset: const Offset(0, 10)
+                              )
+                            ],
+                            color: Colors.teal,
+                            borderRadius: const BorderRadius.all(Radius.circular(10))
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if(_color2 == Colors.grey && _color3 == Colors.grey) {
+                                    dialogSetState(() {
+                                      _color1 = (_color1 ==Colors.purpleAccent) ? Colors.grey : Colors.purpleAccent;
+                                    });
+                                    if(_color1 == Colors.grey) {
+                                      selectMarker = 0;
+                                    } else {
+                                      selectMarker = 1;
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  width: 80.w,
+                                  height: 80.h,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(Radius.circular(10))
+                                  ),
+                                  child: Icon(
+                                    size: 20.sp,
+                                    Icons.cruelty_free_outlined,
+                                    color: Colors.purpleAccent
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10.w),
+                              GestureDetector(
+                                onTap: () {
+                                  if(_color1 == Colors.grey && _color3 == Colors.grey) {
+                                    dialogSetState(() {
+                                      _color2 = (_color2 ==Colors.teal) ? Colors.grey : Colors.teal;
+                                    });
+                                    if(_color2 == Colors.grey) {
+                                      selectMarker = 0;
+                                    } else {
+                                      selectMarker = 2;
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  width: 80.w,
+                                  height: 80.h,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(Radius.circular(10))
+                                  ),
+                                  child: Icon(
+                                    size: 20.sp,
+                                    Icons.liquor_outlined,
+                                    color: Colors.yellowAccent
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10.w),
+                              GestureDetector(
+                                onTap: () {
+                                  if(_color1 == Colors.grey && _color2 == Colors.grey) {
+                                    dialogSetState(() {
+                                      _color3 = (_color3 ==Colors.redAccent) ? Colors.grey : Colors.redAccent;
+                                    });
+                                    if(_color3 == Colors.grey) {
+                                      selectMarker = 0;
+                                    } else {
+                                      selectMarker = 3;
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  width: 80.w,
+                                  height: 80.h,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(Radius.circular(10))
+                                  ),
+                                  child: Icon(
+                                    size: 20.sp,
+                                    Icons.commit_outlined,
+                                    color: Colors.brown
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ),
+                      ),
+                      SizedBox(height: 10.h,),
+                      TextButton(
+                        onPressed: () {
+                          if(selectMarker != 0) {
+                            if(_textEditingController.text == '') {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)
+                                  ),
+                                  title: const Text('Null'),
+                                  content: const Text('일정 내용을 추가하지 않았습니다!'),
+                                  actions: <Widget> [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('OK')
+                                    )
+                                  ]
+                                )
+                              );
+                            } else {
+                              var maxIconCount = context.read<EventsProvider>().setEvents(_selectedDay, _textEditingController, selectMarker);
+                              if(maxIconCount == '초과') {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0)
+                                    ),
+                                    title: const Text('입력 초과'),
+                                    content: const Text('일정에 추가 가능한 개수는 3개입니다.'),
+                                    actions: <Widget> [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('Ok')
+                                      )
+                                    ]
+                                  ),
+                                );
+                              } else {   // NOTE :: 등록 성공 시
+                                _color1 = Colors.grey;
+                                _color2 = Colors.grey;
+                                _color3 = Colors.grey;
+                                _textEditingController.clear();
+                                selectMarker = 0;
+                              }
+                            }
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
+                                ),
+                                title: const Text('Null'),
+                                content: const Text('마커를 지정하지 않았습니다. 마커를 지정해주세요.'),
+                                actions: <Widget> [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Ok'),
+                                  )
+                                ]
+                              )
+                            );
+                          }
+                        },
+                        child: Text('Ok', style: TextStyle(fontSize: 20.sp),)
+                      )
+                    ],
+                  );
+                });
+              }
+            );
+          },
+        ),
       ),
     );
   }
